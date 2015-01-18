@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ShippingEasy.Console
 {
@@ -9,8 +6,16 @@ namespace ShippingEasy.Console
     {
         static void Main(string[] args)
         {
-            var client = new ShippingEasy.Client();
-            System.Console.WriteLine(client.Greet());
+            try
+            {
+                var client = new Client();
+                System.Console.WriteLine(client.GetOrders()     );
+            }
+            catch (Exception exception)
+            {
+                System.Console.WriteLine(exception);
+            }
+            
         }
     }
 }
