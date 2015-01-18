@@ -74,13 +74,17 @@ namespace ShippingEasy
             }
         }
 
-        private string BuildSignature(string method, string path, IDictionary<string, string> parameters)
+        public string BuildSignature(string method, string path, IDictionary<string, string> parameters)
         {
             return "foo";
         }
 
         public Uri BaseUri { get { return _baseUri ?? new Uri(_baseUrl, UriKind.Absolute); } }
 
+        public static string MakeSignature(string apiSecret, string httpMethod, string path, IDictionary<string, string> parameters, string body)
+        {
+            return body;
+        }
     }
 
 }
