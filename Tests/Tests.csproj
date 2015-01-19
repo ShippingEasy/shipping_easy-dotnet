@@ -38,7 +38,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientTests.cs" />
+    <Compile Include="SignatureTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
