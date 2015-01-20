@@ -14,7 +14,7 @@ namespace ShippingEasy
         private readonly IDictionary<string, string> _parameters;
         private readonly string _body;
 
-        public Signature(string apiSecret, string httpMethod, string path, IDictionary<string, string> parameters, string body)
+        public Signature(string apiSecret, string httpMethod, string path, IDictionary<string, string> parameters, string body = null)
         {
             _apiSecret = apiSecret;
             _httpMethod = httpMethod;
