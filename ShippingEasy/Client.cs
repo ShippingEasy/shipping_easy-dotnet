@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Newtonsoft.Json;
 
 namespace ShippingEasy
 {
@@ -32,40 +33,30 @@ namespace ShippingEasy
         {
         }
 
-        public string GetOrders()
+        public string GetAllOrders()
         {
             return MakeRequest("GET", "/api/orders");
         }
 
 
-        public string GetStoreOrders()
+        public string GetStoreOrders(string storeApiKey)
         {
-            var storeApiKey = "c71dc6da574eea04e2c926906bcb4eab";
             return MakeRequest("GET", String.Format("/api/stores/{0}/orders", storeApiKey));
         }
 
-        public string CreateOrder()
+        public Order ParseOrder(string json)
         {
-            var storeApiKey = "c71dc6da574eea04e2c926906bcb4eab";
-            var body = @"
-{
-""order"":{
-      ""external_order_identifier"":""ABC-100"",
-      ""ordered_at"":""2014-01-16 14:37:56 -0600"",
-      ""recipients"":[{
-         ""first_name"":""Colin"",
-         ""last_name"":""Smith"",
-         ""address"":""1600 Pennsylvania Ave"",
-         ""line_items"":[
-           {
-             ""item_name"": ""JMF Block"",
-             ""quantity"": 1
-           }
-         ]
-      }]
-}
-}
-";
+            return JsonConvert.DeserializeObject<Order>(json);
+        }
+
+        public string OrderToJson(Order order)
+        {
+            return JsonConvert.SerializeObject(order, Formatting.Indented);
+        }
+
+        public string CreateOrder(string storeApiKey, Order order)
+        {
+            var body = String.Format("{{\"order\": {0}}}", OrderToJson(order));
             return MakeRequest("POST", String.Format("/api/stores/{0}/orders", storeApiKey), body);
         }
 
