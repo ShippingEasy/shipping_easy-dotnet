@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ShippingEasy.Console
@@ -10,15 +11,22 @@ namespace ShippingEasy.Console
             var command = (args.FirstOrDefault() ?? "ORDERS").ToUpper();
             try
             {
-                var client = new Client();
+                var connection = new Connection();
+                var client = new Client(connection);
                 string response;
                 switch (command)
                 {
                     case "ORDERS":
-                        response = client.GetAllOrders();
+                        response = connection.GetAllOrdersJson(new Dictionary<string, string>
+                        {
+                            {"status", "ready_for_shipment"},
+                            {"page", "2"}, {"per_page", "2"},
+                            {"last_updated_at", "2015-01-20"}
+                        });
                         break;
                     case "STORE_ORDERS":
-                        response = client.GetStoreOrders("c71dc6da574eea04e2c926906bcb4eab");
+                        response = connection.GetStoreOrdersJson("c71dc6da574eea04e2c926906bcb4eab",
+                            new Dictionary<string, string>{{"status", "ready_for_shipment"}});
                         break;
                     case "CREATE_ORDER":
                         response = client.CreateOrder("c71dc6da574eea04e2c926906bcb4eab", new Order
