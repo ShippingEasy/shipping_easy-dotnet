@@ -27,7 +27,9 @@ namespace ShippingEasy
         {
             var orderedParams = _parameters.OrderBy(param => param.Key)
                 .Where(param => !String.IsNullOrWhiteSpace(param.Value))
-                .Select(param => String.Format("{0}={1}", param.Key, param.Value));
+                .Select(param => String.Format("{0}={1}",
+                    param.Key,
+                    UrlEncodeValue(param.Value)));
             var combinedParameters = String.Join("&", orderedParams);
 
             return String.Join("&",
@@ -65,5 +67,18 @@ namespace ShippingEasy
                 builder.AppendFormat("{0:x2}", part)).ToString();
         }
 
+        /// <summary>
+        /// Encodes a query string value
+        /// </summary>
+        /// <remarks>Values must be encoded in the same way they will be
+        /// interpreted by the API server (Rack::Utils.build_query), so
+        /// that the computed signature matches on both ends.
+        /// </remarks>
+        /// <param name="parameterValue">The query string value</param>
+        /// <returns>A properly encoded string</returns>
+        private static string UrlEncodeValue(string parameterValue)
+        {
+            return Uri.EscapeDataString(parameterValue).Replace("%20", "+");
+        }
     }
 }

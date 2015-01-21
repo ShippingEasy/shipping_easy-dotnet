@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting;
 using NUnit.Framework;
 using ShippingEasy;
 
@@ -60,7 +61,35 @@ namespace Tests
             Assert.AreEqual(
                 "67b39b771fd62a3c9ec2d385330b49cafe595010ba459a9c981384bfcdcf58af",
                 BuildSignature().ToString());
+        }
 
+        [Test]
+        public void HandlesNonAlphanumericCharactersInParameterValues()
+        {
+            _parameters.Add("last_updated_at", "2015-01-20T16:10:30.5635874-06:00");
+
+            var buildSignature = BuildSignature();
+            
+            Assert.AreEqual(
+                "GET&/api/orders&api_key=444888222&api_timestamp=1421551594&count=200&last_updated_at=2015-01-20T16%3A10%3A30.5635874-06%3A00&page=1",
+                buildSignature.ToPlainTextString());
+
+            Assert.AreEqual("c0cba7aa11f35cbffe5526990f817c7b75b73a22a75e5c2d0cb8256ba677becb",
+                buildSignature.ToString());
+        }
+
+        [Test]
+        public void HandlesSpacesInParameterValues()
+        {
+            _parameters.Add("status", "first, second");
+            
+            var signature = BuildSignature();
+            
+            Assert.AreEqual(
+                "GET&/api/orders&api_key=444888222&api_timestamp=1421551594&count=200&page=1&status=first%2C+second",
+                signature.ToPlainTextString());
+            Assert.AreEqual("66845993fda543eb789a20cc1d137c7e628d5c71b604e0bc28f48805d81881df",
+                signature.ToString());
         }
     }
 }
