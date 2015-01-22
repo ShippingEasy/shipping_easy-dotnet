@@ -28,7 +28,7 @@ namespace Tests
         [Test]
         public void CreateOrderFromJson()
         {
-            var order = new Client().ParseOrder(OrderJson);
+            var order = Client.ParseOrder(OrderJson);
             Assert.AreEqual("ABC-100", order.OrderIdentifier);
             var date = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0));
             Assert.AreEqual(date, order.OrderedAt);
@@ -58,7 +58,7 @@ namespace Tests
             recipient.LineItems.Add(lineItem);
             order.Recipients.Add(recipient);
 
-            var json = new Client().OrderToJson(order);
+            var json = Client.OrderToJson(order);
             Assert.AreEqual(OrderJson, json);
         }
     }

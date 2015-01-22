@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace ShippingEasy.Console
@@ -9,9 +10,13 @@ namespace ShippingEasy.Console
         static void Main(string[] args)
         {
             var command = (args.FirstOrDefault() ?? "ORDERS").ToUpper();
+            var appSettings = System.Configuration.ConfigurationManager.AppSettings;
+            var apiKey = appSettings["ShippingEasy.ApiKey"];
+            var apiSecret = appSettings["ShippingEasy.ApiSecret"];
+            var baseUrl = appSettings["ShippingEasy.BaseUrl"];
             try
             {
-                var client = new Client();
+                var client = new Client(apiKey, apiSecret, baseUrl);
                 string response;
                 switch (command)
                 {

@@ -9,27 +9,17 @@ namespace ShippingEasy
 {
     public class Connection
     {
+        public const string DefaultApiUrl = "https://app.shippingeasy.com";
         private readonly string _apiKey;
         private readonly string _apiSecret;
         private readonly Uri _baseUri;
 
 
-        public Connection(string apiKey, string apiSecret, string baseUrl)
+        public Connection(string apiKey, string apiSecret, string baseUrl = null)
         {
             _apiKey = apiKey;
             _apiSecret = apiSecret;
-            _baseUri = new Uri(baseUrl, UriKind.Absolute);
-        }
-
-        public Connection(string apiKey, string apiSecret) : this(apiKey,apiSecret, "http://172.16.65.1:5000")
-        {
-            _apiKey = apiKey;
-            _apiSecret = apiSecret;
-        }
-
-        public Connection()
-            : this("f9a7c8ebdfd34beaf260d9b0296c7059", "850fd4e023478758360b0d1d1817448f0a57b3176be25ffe8a7cf2236eca9ec3")
-        {
+            _baseUri = new Uri(baseUrl ?? DefaultApiUrl, UriKind.Absolute);
         }
 
         public string GetAllOrdersJson(IDictionary<string, string> options = null)

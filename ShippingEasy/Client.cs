@@ -7,11 +7,6 @@ namespace ShippingEasy
     {
         private readonly Connection _connection;
 
-        public Client()
-        {
-            _connection = new Connection();
-        }
-
         public Client(string apiKey, string apiSecret, string baseUrl)
         {
             _connection = new Connection(apiKey, apiSecret, baseUrl);
@@ -37,12 +32,12 @@ namespace ShippingEasy
             return new OrderQueryResponse(responseBody);
         }
 
-        public Order ParseOrder(string json)
+        public static Order ParseOrder(string json)
         {
             return JsonConvert.DeserializeObject<Order>(json);
         }
 
-        public string OrderToJson(Order order)
+        public static string OrderToJson(Order order)
         {
             return JsonConvert.SerializeObject(order, Formatting.Indented);
         }
