@@ -92,8 +92,7 @@ namespace ShippingEasy
             request.UserAgent = "ShippingEasy .NET Client v1.0.0";
 
             if (body == null) return request;
-            using (var bodyStream = request.GetRequestStream())
-            using (var writer = new StreamWriter(bodyStream))
+            using (var writer = new StreamWriter(request.GetRequestStream()))
             {
                 writer.Write(body);
             }
@@ -117,6 +116,7 @@ namespace ShippingEasy
 
     }
 
+    [Serializable]
     public class ApiException : Exception
     {
         public ApiException(HttpStatusCode statusCode, string errorBody)
