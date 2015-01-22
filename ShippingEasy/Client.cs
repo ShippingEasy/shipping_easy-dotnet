@@ -22,10 +22,19 @@ namespace ShippingEasy
             _connection = connection;
         }
 
-        public string CreateOrder(string storeApiKey, Order order)
+        public CreateOrderResponse CreateOrder(string storeApiKey, Order order)
         {
             var body = String.Format("{{\"order\": {0}}}", OrderToJson(order));
-            return _connection.CreateOrderFromJson(storeApiKey, body);
+            var responseBody = _connection.CreateOrderFromJson(storeApiKey, body);
+            return new CreateOrderResponse(responseBody);
+        }
+
+        public OrderQueryResponse GetOrders(OrderQuery query)
+        {
+            var responseBody = query.StoreKey != null ?
+                _connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary()) :
+                _connection.GetAllOrdersJson(query.ToDictionary());
+            return new OrderQueryResponse(responseBody);
         }
 
         public Order ParseOrder(string json)

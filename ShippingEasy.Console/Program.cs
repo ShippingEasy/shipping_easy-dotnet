@@ -11,22 +11,25 @@ namespace ShippingEasy.Console
             var command = (args.FirstOrDefault() ?? "ORDERS").ToUpper();
             try
             {
-                var connection = new Connection();
-                var client = new Client(connection);
+                var client = new Client();
                 string response;
                 switch (command)
                 {
                     case "ORDERS":
-                        response = connection.GetAllOrdersJson(new Dictionary<string, string>
-                        {
-                            {"status", "ready_for_shipment"},
-                            {"page", "2"}, {"per_page", "2"},
-                            {"last_updated_at", "2015-01-20"}
-                        });
+                        response =
+                            client.GetOrders(new OrderQuery
+                            {
+                                Status = "ready_for_shipment",
+                                Page = 2,
+                                ResultsPerPage = 2
+                            }).ToString();
                         break;
                     case "STORE_ORDERS":
-                        response = connection.GetStoreOrdersJson("c71dc6da574eea04e2c926906bcb4eab",
-                            new Dictionary<string, string>{{"status", "ready_for_shipment"}});
+                        response = client.GetOrders(new OrderQuery
+                        {
+                            StoreKey = "c71dc6da574eea04e2c926906bcb4eab",
+                            Status = "shipped, ready_for_shipment",
+                        }).ToString();
                         break;
                     case "CREATE_ORDER":
                         response = client.CreateOrder("c71dc6da574eea04e2c926906bcb4eab", new Order
@@ -44,7 +47,7 @@ namespace ShippingEasy.Console
                                     LineItems = { new LineItem { ItemName = "Sprocket", Quantity = 7 } }
                                 }
                             }
-                        });
+                        }).ToString();
                         break;
                     default:
                         throw new ArgumentException("Unrecognized command: " + command);

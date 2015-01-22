@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="ClientTests.cs" />
     <Compile Include="ConnectionTests.cs" />
+    <Compile Include="OrderQueryTests.cs" />
     <Compile Include="SignatureTests.cs" />
   </ItemGroup>
   <ItemGroup>
