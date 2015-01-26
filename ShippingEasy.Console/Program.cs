@@ -27,14 +27,14 @@ namespace ShippingEasy.Console
                                 Status = "ready_for_shipment",
                                 Page = 2,
                                 ResultsPerPage = 2
-                            }).ToString();
+                            }).RawJson;
                         break;
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery
                         {
                             StoreKey = "c71dc6da574eea04e2c926906bcb4eab",
                             Status = "shipped, ready_for_shipment",
-                        }).ToString();
+                        }).RawJson;
                         break;
                     case "CREATE_ORDER":
                         response = client.CreateOrder("c71dc6da574eea04e2c926906bcb4eab", new Order
@@ -52,7 +52,7 @@ namespace ShippingEasy.Console
                                     LineItems = { new LineItem { ItemName = "Sprocket", Quantity = 7 } }
                                 }
                             }
-                        }).ToString();
+                        }).RawJson;
                         break;
                     default:
                         throw new ArgumentException("Unrecognized command: " + command);

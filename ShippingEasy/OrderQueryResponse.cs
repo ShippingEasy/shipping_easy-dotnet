@@ -1,17 +1,10 @@
+using System.Collections.Generic;
+
 namespace ShippingEasy
 {
     public class OrderQueryResponse
     {
-        private readonly string _responseBody;
-
-        public OrderQueryResponse(string responseBody)
-        {
-            _responseBody = responseBody;
-        }
-
-        public override string ToString()
-        {
-            return _responseBody;
-        }
+        public IList<Order> Orders { get; set; }
+        public string RawJson { get; private set; }
     }
 }

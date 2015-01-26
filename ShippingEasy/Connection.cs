@@ -100,15 +100,6 @@ namespace ShippingEasy
         }
 
 
-        //  Valid Responses:
-        // all orders: {"orders": [], "meta": {}}
-        // one order: {"order": {}}
-        // create: {"order": {}}
-        // create (fail): {"errors":[]}
-        // failures: {"errors": [{"message": "foo", "status": 403}]}
-
-
-
         public string BuildSignature(string method, string path, IDictionary<string, string> parameters, string body)
         {
             return new Signature(_apiSecret, method, path, parameters, body).ToString();

@@ -41,10 +41,15 @@
   <ItemGroup>
     <Compile Include="ClientTests.cs" />
     <Compile Include="ConnectionTests.cs" />
+    <Compile Include="CreateOrderResponseTests.cs" />
     <Compile Include="OrderQueryTests.cs" />
+    <Compile Include="ResponseParserTests.cs" />
     <Compile Include="SignatureTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fixtures\create_order_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

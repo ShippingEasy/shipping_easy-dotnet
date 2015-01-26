@@ -26,26 +26,6 @@ namespace Tests
 }";
 
         [Test]
-        public void CreateOrderFromJson()
-        {
-            var order = Client.ParseOrder(OrderJson);
-            Assert.AreEqual("ABC-100", order.OrderIdentifier);
-            var date = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0));
-            Assert.AreEqual(date, order.OrderedAt);
-
-            Assert.AreEqual(1, order.Recipients.Count);
-            var recipient = order.Recipients[0];
-
-            Assert.AreEqual("Colin", recipient.FirstName);
-            Assert.AreEqual("Smith", recipient.LastName);
-            Assert.AreEqual(1, recipient.LineItems.Count);
-            var lineItem = recipient.LineItems[0];
-
-            Assert.AreEqual("Sprocket", lineItem.ItemName);
-            Assert.AreEqual(7, lineItem.Quantity);
-        }
-
-        [Test]
         public void CreateJsonFromOrder()
         {
             var order = new Order

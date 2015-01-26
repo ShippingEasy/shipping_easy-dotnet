@@ -2,16 +2,7 @@ namespace ShippingEasy
 {
     public class CreateOrderResponse
     {
-        private readonly string _responseBody;
-
-        public CreateOrderResponse(string responseBody)
-        {
-            _responseBody = responseBody;
-        }
-
-        public override string ToString()
-        {
-            return _responseBody;
-        }
+        public Order Order { get; set; }
+        public string RawJson { get; private set; }
     }
 }

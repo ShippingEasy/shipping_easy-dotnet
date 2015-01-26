@@ -7,7 +7,8 @@ namespace ShippingEasy
     public class Order
     {
         private readonly List<Recipient> _recipients = new List<Recipient>();
-
+        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+        public int? SystemId { get; set; }
         [JsonProperty("external_order_identifier")]
         public string OrderIdentifier { get; set; }
         [JsonProperty("ordered_at")]
