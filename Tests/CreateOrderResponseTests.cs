@@ -18,6 +18,8 @@ namespace Tests
             Assert.AreEqual("ABC-6355", order.OrderIdentifier);
             var date = new DateTimeOffset(2015, 1, 23, 20, 13, 32, new TimeSpan());
             Assert.AreEqual(date, order.OrderedAt);
+            Assert.AreEqual("ready_for_shipment", order.Status);
+            Assert.AreEqual(0.01, order.TotalIncludingTax);
 
             Assert.AreEqual(1, order.Recipients.Count);
             var recipient = order.Recipients[0];

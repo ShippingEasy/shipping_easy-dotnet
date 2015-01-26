@@ -21,16 +21,11 @@ namespace ShippingEasy
                     var jsonSubset = json.SelectToken(prop.Name.ToLower());
                     if (jsonSubset == null) continue;
                     Debug.WriteLine("Populating `{0}` as `{1}` from `{2}`", prop.Name, prop.PropertyType.Name, jsonSubset);
-                    var value = JsonConvert.DeserializeObject(jsonSubset.ToString(), prop.PropertyType);
+                    var value = JsonConvert.DeserializeObject(jsonSubset.ToString(), prop.PropertyType, Serialization.Settings);
                     prop.SetValue(instance, value, null);
                 }
             }
             return instance;
-        }
-
-        public static Order ParseOrder(string json)
-        {
-            return JsonConvert.DeserializeObject<Order>(json);
         }
     }
 }

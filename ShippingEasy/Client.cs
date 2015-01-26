@@ -34,7 +34,7 @@ namespace ShippingEasy
 
         public static string OrderToJson(Order order)
         {
-            return JsonConvert.SerializeObject(order, Formatting.Indented);
+            return JsonConvert.SerializeObject(order, Formatting.Indented, Serialization.Settings);
         }
     }
 }
