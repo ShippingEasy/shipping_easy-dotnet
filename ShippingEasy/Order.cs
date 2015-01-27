@@ -98,6 +98,7 @@ namespace ShippingEasy
 
     public class LineItem
     {
+        private IDictionary<string, string> _productOptions = new Dictionary<string, string>();
         public string ItemName { get; set; }
         public int? Quantity { get; set; }
         public string Sku { get; set; }
@@ -108,5 +109,10 @@ namespace ShippingEasy
         public decimal? UnitPrice { get; set; }
         public string ExtLineItemId { get; set; }
         public string ExtProductId { get; set; }
+
+        public IDictionary<string, string> ProductOptions
+        {
+            get { return _productOptions; }
+        }
     }
 }

@@ -18,7 +18,11 @@ namespace Tests
       ""line_items"": [
         {
           ""item_name"": ""Sprocket"",
-          ""quantity"": 7
+          ""quantity"": 7,
+          ""product_options"": {
+            ""color"": ""blue"",
+            ""size"": ""3""
+          }
         }
       ]
     }
@@ -34,7 +38,12 @@ namespace Tests
                 OrderedAt = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0))
             };
             var recipient = new Recipient {FirstName = "Colin", LastName = "Smith", Address = "1600 Pennsylvania Ave"};
-            var lineItem = new LineItem {ItemName = "Sprocket", Quantity = 7};
+            var lineItem = new LineItem
+            {
+                ItemName = "Sprocket",
+                Quantity = 7,
+                ProductOptions = { {"color", "blue"}, {"size", "3"}}
+            };
             recipient.LineItems.Add(lineItem);
             order.Recipients.Add(recipient);
 

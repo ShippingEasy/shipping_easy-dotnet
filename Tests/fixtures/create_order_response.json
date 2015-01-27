@@ -93,7 +93,11 @@
             "unit_price":"4.03",
             "ext_line_item_id":null,
             "ext_product_id":null,
-            "product_options":null
+            "product_options": {
+			  "color": "blue",
+			  "size": 2,
+			  "wide": true
+			}
           }
         ],
         "original_order":{  

@@ -102,12 +102,16 @@ namespace Tests
             Assert.AreEqual(1.03m, line1.UnitPrice);
             Assert.AreEqual("998", line1.ExtLineItemId);
             Assert.AreEqual("887", line1.ExtProductId);
+            Assert.AreEqual(0, line1.ProductOptions.Count);
             var line2 = recipient.LineItems[1];
             Assert.AreEqual("Widget", line2.ItemName);
             Assert.AreEqual("AB-321", line2.Sku);
             Assert.AreEqual(null, line2.BinPickingNumber);
             Assert.AreEqual(4.01m, line2.TotalExcludingTax);
-
+            Assert.AreEqual(3, line2.ProductOptions.Count);
+            Assert.AreEqual("blue", line2.ProductOptions["color"]);
+            Assert.AreEqual("2", line2.ProductOptions["size"]);
+            Assert.AreEqual("True", line2.ProductOptions["wide"]);
         }
     }
 }
