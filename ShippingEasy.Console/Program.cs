@@ -22,12 +22,7 @@ namespace ShippingEasy.Console
                 {
                     case "ORDERS":
                         response =
-                            client.GetOrders(new OrderQuery
-                            {
-                                Status = "ready_for_shipment",
-                                Page = 2,
-                                ResultsPerPage = 2
-                            }).RawJson;
+                            client.GetOrders().RawJson;
                         break;
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery

@@ -5,30 +5,44 @@ namespace ShippingEasy
 {
     public class Client
     {
-        private readonly Connection _connection;
+        public Connection Connection { get; private set; }
 
         public Client(string apiKey, string apiSecret, string baseUrl)
         {
-            _connection = new Connection(apiKey, apiSecret, baseUrl);
+            Connection = new Connection(apiKey, apiSecret, baseUrl);
         }
 
         public Client(Connection connection)
         {
-            _connection = connection;
+            Connection = connection;
         }
 
+        /// <summary>
+        /// Create a new order in your ShippingEasy account
+        /// </summary>
+        /// <param name="storeApiKey">The Store API Key that identifies the store where the order will be created.
+        /// <remarks>Not to be confused with your account's API Key which is used for authentication.</remarks>
+        /// </param>
+        /// <param name="order">The details of the order that will be created within the ShippingEasy system.</param>
+        /// <returns></returns>
         public CreateOrderResponse CreateOrder(string storeApiKey, Order order)
         {
             var body = String.Format("{{\"order\": {0}}}", OrderToJson(order));
-            var responseBody = _connection.CreateOrderFromJson(storeApiKey, body);
+            var responseBody = Connection.CreateOrderFromJson(storeApiKey, body);
             return new ResponseParser().Parse<CreateOrderResponse>(responseBody);
         }
 
-        public OrderQueryResponse GetOrders(OrderQuery query)
+        /// <summary>
+        /// Downloads orders from your ShippingEasy account
+        /// </summary>
+        /// <param name="query">Optional values used to limit the orders that are returned.</param>
+        /// <returns></returns>
+        public OrderQueryResponse GetOrders(OrderQuery query = null)
         {
+            query = query ?? new OrderQuery();
             var responseBody = query.StoreKey != null ?
-                _connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary()) :
-                _connection.GetAllOrdersJson(query.ToDictionary());
+                Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary()) :
+                Connection.GetAllOrdersJson(query.ToDictionary());
             return new ResponseParser().Parse<OrderQueryResponse>(responseBody);
         }
 

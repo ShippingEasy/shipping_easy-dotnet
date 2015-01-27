@@ -4,9 +4,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 
 namespace ShippingEasy
 {
+    /// <summary>
+    /// Low level access to the ShippingEasy API endpoints
+    /// </summary>
+    /// <remarks>
+    /// This class contains the methods to send and receive JSON strings
+    /// to the ShippingEasy API; ensuring the URL and authentication
+    /// signatures are constructed properly.
+    /// In most cases, you do not need to use this class directly, but it
+    /// can be useful if the higher-level <see cref="ShippingEasy.Client"/>
+    /// does not provide the functionality you need. For example, you want
+    /// more control over the serialization/deserialization of the JSON, or
+    /// if you need to make API requests that are not yet exposed
+    /// via <see cref="ShippingEasy.Client"/>.
+    /// </remarks>
     public class Connection
     {
         public const string DefaultApiUrl = "https://app.shippingeasy.com";
@@ -14,7 +29,21 @@ namespace ShippingEasy
         private readonly string _apiSecret;
         private readonly Uri _baseUri;
 
-
+        /// <summary>
+        /// Creates a new instance of a Connection
+        /// </summary>
+        /// <param name="apiKey">The API Key that identifies your ShippingEasy account.
+        /// <remarks>Available on the API Credentials section of the Settings page.
+        /// Do not confuse with the Store API Key on the Store settings page which
+        /// identifies a specific store integration.</remarks>
+        /// </param>
+        /// <param name="apiSecret">The API Secret that authenticates your ShippingEasy acccount.
+        /// <remarks>Available on the API Credentials section of the Settings page.</remarks></param>
+        /// <param name="baseUrl">The server URL hosting the ShippingEasy API
+        /// <remarks>This is provided for development/testing purposes. In normal production
+        /// scenarios you should omit this value (or pass null)
+        /// </remarks>
+        /// </param>
         public Connection(string apiKey, string apiSecret, string baseUrl = null)
         {
             _apiKey = apiKey;
@@ -30,18 +59,25 @@ namespace ShippingEasy
 
         public string GetStoreOrdersJson(string storeApiKey, IDictionary<string, string> options = null)
         {
-            return MakeRequest("GET", String.Format("/api/stores/{0}/orders", storeApiKey), null, options);
+            return MakeRequest("GET", String.Format("/api/stores/{0}/orders", storeApiKey), query: options);
         }
 
         public string CreateOrderFromJson(string storeApiKey, string jsonBody)
         {
             return MakeRequest("POST", String.Format("/api/stores/{0}/orders", storeApiKey), jsonBody);
         }
-
+        
+        /// <summary>
+        /// A hook to override the method that takes a fully-constructed WebRequest and returns a response string
+        /// </summary>
+        /// <remarks>
+        /// Override if you need to handle responses/errors differently, or modify the request before executing.
+        /// </remarks>
+        public Func<WebRequest, string> RequestRunner { get; set; }
         public string MakeRequest(string httpMethod, string path, string body = null, IDictionary<string, string> query = null)
         {
             var request = BuildRequest(path, query, httpMethod, body);
-            return HandleResponse(request);
+            return (RequestRunner ?? HandleResponse)(request);
         }
 
         private static string HandleResponse(WebRequest request)
