@@ -12,7 +12,7 @@ namespace Tests
         [Test]
         public void DeserializeTheCreatedOrder()
         {
-            var response = File.ReadAllText(@"fixtures\create_order_response.json");
+            var response = Fixture.Json("create_order_response");
 
             var createOrderResponse = new ResponseParser().Parse<CreateOrderResponse>(response);
             var order = createOrderResponse.Order;

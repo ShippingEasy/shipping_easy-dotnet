@@ -1,6 +1,7 @@
+using System;
 using System.Diagnostics;
+using System.Reflection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ShippingEasy
 {
@@ -8,24 +9,21 @@ namespace ShippingEasy
     {
         public TResponse Parse<TResponse>(string response) where TResponse : new()
         {
-            var instance = new TResponse();
-            var json = JObject.Parse(response);
-            foreach (var prop in typeof (TResponse).GetProperties())
-            {
-                if (prop.Name == "RawJson")
-                {
-                    prop.SetValue(instance, response, null);
-                }
-                else
-                {
-                    var jsonSubset = json.SelectToken(prop.Name.ToLower());
-                    if (jsonSubset == null) continue;
-                    Debug.WriteLine("Populating `{0}` as `{1}` from `{2}`", prop.Name, prop.PropertyType.Name, jsonSubset);
-                    var value = JsonConvert.DeserializeObject(jsonSubset.ToString(), prop.PropertyType, Serialization.Settings);
-                    prop.SetValue(instance, value, null);
-                }
-            }
+            var responseType = typeof(TResponse);
+            Debug.WriteLine("Deserializing into `{0}`: `{1}`", responseType.Name, response);
+            var instance = JsonConvert.DeserializeObject<TResponse>(response, Serialization.Settings);
+            PopulateSpecialProperties(response, responseType, instance);
             return instance;
+        }
+
+        private static void PopulateSpecialProperties(string response, Type responseType, object instance)
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+            var propertyInfo = responseType.GetProperty("RawJson", flags);
+            if (propertyInfo != null)
+            {
+                propertyInfo.SetValue(instance, response, null);
+            }
         }
     }
 }

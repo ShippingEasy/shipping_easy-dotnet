@@ -16,7 +16,8 @@ namespace ShippingEasy
                     NullValueHandling = NullValueHandling.Ignore,
                     DateFormatHandling = DateFormatHandling.IsoDateFormat,
                     DateParseHandling = DateParseHandling.DateTimeOffset,
-                    DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                    DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
+                    TraceWriter = new DiagnosticsTraceWriter()
                 };
             }
         }

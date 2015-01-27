@@ -42,12 +42,25 @@
     <Compile Include="ClientTests.cs" />
     <Compile Include="ConnectionTests.cs" />
     <Compile Include="CreateOrderResponseTests.cs" />
+    <Compile Include="Fixture.cs" />
     <Compile Include="OrderQueryTests.cs" />
     <Compile Include="ResponseParserTests.cs" />
     <Compile Include="SignatureTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fixtures\create_order_response.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fixtures\get_orders_success.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fixtures\get_orders_none_returned.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fixtures\get_orders_fail_authentication.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fixtures\create_order_fail_validation.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

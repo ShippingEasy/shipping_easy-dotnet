@@ -94,9 +94,8 @@ namespace ShippingEasy
             {
                 if (webException.Response == null) throw;
                 var failureResponse = ((HttpWebResponse)webException.Response);
-                var statusCode = failureResponse.StatusCode;
                 var errorBody = ReadBody(failureResponse.GetResponseStream());
-                throw new ApiException(statusCode, errorBody);
+                return errorBody;
             }
         }
 
@@ -141,14 +140,5 @@ namespace ShippingEasy
             return new Signature(_apiSecret, method, path, parameters, body).ToString();
         }
 
-    }
-
-    [Serializable]
-    public class ApiException : Exception
-    {
-        public ApiException(HttpStatusCode statusCode, string errorBody)
-            : base(String.Format("{0}: {1}", statusCode, errorBody))
-        {
-        }
     }
 }

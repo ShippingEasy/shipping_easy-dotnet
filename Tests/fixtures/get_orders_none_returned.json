@@ -1,0 +1,16 @@
+{  
+   "orders":[  
+
+   ],
+   "meta":{  
+      "current_page":1,
+      "next_page":null,
+      "prev_page":null,
+      "total_pages":0,
+      "total_count":0,
+      "last_updated_at":"2015-01-20T21:59:50Z",
+      "status":[  
+         "shipped"
+      ]
+   }
+}
