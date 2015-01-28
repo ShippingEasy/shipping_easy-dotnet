@@ -121,10 +121,10 @@ namespace Tests
         private static Connection ResponseFromFile(string filename)
         {
             var contents = Fixture.Json(filename);
-            return FakeConnection(returns => contents);
+            return FakeConnection(returns => new HttpResponse{Body = contents});
         }
 
-        private static Connection FakeConnection(Func<WebRequest, string> response)
+        private static Connection FakeConnection(Func<WebRequest, HttpResponse> response)
         {
             return new Connection("fakeKey", "fakeSecret") {RequestRunner = response};
         }

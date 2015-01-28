@@ -51,18 +51,18 @@ namespace ShippingEasy
             _baseUri = new Uri(baseUrl ?? DefaultApiUrl, UriKind.Absolute);
         }
 
-        public string GetAllOrdersJson(IDictionary<string, string> options = null)
+        public HttpResponse GetAllOrdersJson(IDictionary<string, string> options = null)
         {
             return MakeRequest("GET", "/api/orders", null, options);
         }
 
 
-        public string GetStoreOrdersJson(string storeApiKey, IDictionary<string, string> options = null)
+        public HttpResponse GetStoreOrdersJson(string storeApiKey, IDictionary<string, string> options = null)
         {
             return MakeRequest("GET", String.Format("/api/stores/{0}/orders", storeApiKey), query: options);
         }
 
-        public string CreateOrderFromJson(string storeApiKey, string jsonBody)
+        public HttpResponse CreateOrderFromJson(string storeApiKey, string jsonBody)
         {
             return MakeRequest("POST", String.Format("/api/stores/{0}/orders", storeApiKey), jsonBody);
         }
@@ -73,21 +73,22 @@ namespace ShippingEasy
         /// <remarks>
         /// Override if you need to handle responses/errors differently, or modify the request before executing.
         /// </remarks>
-        public Func<WebRequest, string> RequestRunner { get; set; }
-        public string MakeRequest(string httpMethod, string path, string body = null, IDictionary<string, string> query = null)
+        public Func<WebRequest, HttpResponse> RequestRunner { get; set; }
+        public HttpResponse MakeRequest(string httpMethod, string path, string body = null, IDictionary<string, string> query = null)
         {
             var request = BuildRequest(path, query, httpMethod, body);
             return (RequestRunner ?? HandleResponse)(request);
         }
 
-        private static string HandleResponse(WebRequest request)
+        private static HttpResponse HandleResponse(WebRequest request)
         {
             try
             {
                 using (var response = request.GetResponse())
                 {
                     var responseStream = response.GetResponseStream();
-                    return ReadBody(responseStream);
+                    var statusCode = (int) ((HttpWebResponse) response).StatusCode;
+                    return new HttpResponse{ Body = ReadBody(responseStream), Status = statusCode};
                 }
             }
             catch (WebException webException)
@@ -95,7 +96,8 @@ namespace ShippingEasy
                 if (webException.Response == null) throw;
                 var failureResponse = ((HttpWebResponse)webException.Response);
                 var errorBody = ReadBody(failureResponse.GetResponseStream());
-                return errorBody;
+                var statusCode = (int) failureResponse.StatusCode;
+                return new HttpResponse {Body = errorBody, Status = statusCode};
             }
         }
 
@@ -140,5 +142,11 @@ namespace ShippingEasy
             return new Signature(_apiSecret, method, path, parameters, body).ToString();
         }
 
+    }
+
+    public class HttpResponse
+    {
+        public string Body { get; set; }
+        public int Status { get; set; }
     }
 }

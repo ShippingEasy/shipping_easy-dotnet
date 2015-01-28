@@ -27,9 +27,9 @@ namespace ShippingEasy
         /// <returns></returns>
         public CreateOrderResponse CreateOrder(string storeApiKey, Order order)
         {
-            var body = String.Format("{{\"order\": {0}}}", OrderToJson(order));
-            var responseBody = Connection.CreateOrderFromJson(storeApiKey, body);
-            return new ResponseParser().Parse<CreateOrderResponse>(responseBody);
+            var postBody = String.Format("{{\"order\": {0}}}", OrderToJson(order));
+            var response = Connection.CreateOrderFromJson(storeApiKey, postBody);
+            return new ResponseParser().Parse<CreateOrderResponse>(response.Body);
         }
 
         /// <summary>
@@ -40,10 +40,10 @@ namespace ShippingEasy
         public OrderQueryResponse GetOrders(OrderQuery query = null)
         {
             query = query ?? new OrderQuery();
-            var responseBody = query.StoreKey != null ?
+            var response = query.StoreKey != null ?
                 Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary()) :
                 Connection.GetAllOrdersJson(query.ToDictionary());
-            return new ResponseParser().Parse<OrderQueryResponse>(responseBody);
+            return new ResponseParser().Parse<OrderQueryResponse>(response.Body);
         }
 
         public static string OrderToJson(Order order)
