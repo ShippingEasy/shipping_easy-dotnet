@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 
 namespace ShippingEasy
 {
@@ -129,13 +128,27 @@ namespace ShippingEasy
             request.UserAgent = "ShippingEasy .NET Client v1.0.0";
 
             if (body == null) return request;
+            (SetRequestBody ?? WriteToRequestStream)(request, body);
+            return request;
+        }
+
+        /// <summary>
+        /// Override writing the request body to the HttpWebRequest
+        /// <remarks>
+        /// Calling WebRequest.GetRequestStream() opens a connection to the URL,
+        /// even before you execute the request (GetResponse). This hook
+        /// allows us to stub out the functionality so we do not connect
+        /// to any remote URLs from unit tests. 
+        /// </remarks>
+        /// </summary>
+        public Action<WebRequest, string> SetRequestBody { get; set; }
+        private static void WriteToRequestStream(WebRequest request, string body)
+        {
             using (var writer = new StreamWriter(request.GetRequestStream()))
             {
                 writer.Write(body);
             }
-            return request;
         }
-
 
         public string BuildSignature(string method, string path, IDictionary<string, string> parameters, string body)
         {

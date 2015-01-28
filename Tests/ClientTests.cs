@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using ShippingEasy;
 
@@ -103,19 +101,38 @@ namespace Tests
 
             var response = client.GetOrders();
             Assert.IsFalse(response.Success);
-            Assert.AreEqual(1, response.Errors.Count);
-            Assert.AreEqual(401, response.Errors[0].Status);
-            Assert.AreEqual("Access denied.", response.Errors[0].Message);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("Access denied"));
         }
 
-        [Test, Ignore("Need to normalize the errors node in response")]
+        [Test]
+        public void CreateOrderSuccess()
+        {
+            var client = new Client(ResponseFromFile("create_order_response"));
+
+            var response = client.CreateOrder("abc", new Order());
+            Assert.IsTrue(response.Success);
+            Assert.AreEqual(122, response.Order.SystemId);
+        }
+
+        [Test]
         public void CreateOrderWithValidationError()
         {
             var client = new Client(ResponseFromFile("create_order_fail_validation"));
 
-            var response = client.GetOrders();
+            var response = client.CreateOrder("abc", new Order());
             Assert.IsFalse(response.Success);
-            Assert.AreEqual("foo", response.Errors);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("ordered_at"));
+            Assert.That(response.Errors.ToString(), Is.StringContaining("recipients"));
+        }
+        
+        [Test]
+        public void CreateOrderExpiredRequestSignature()
+        {
+            var client = new Client(ResponseFromFile("create_order_fail_expired"));
+
+            var response = client.CreateOrder("abc", new Order());
+            Assert.IsFalse(response.Success);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("The request has expired"));
         }
 
         private static Connection ResponseFromFile(string filename)
@@ -126,7 +143,12 @@ namespace Tests
 
         private static Connection FakeConnection(Func<WebRequest, HttpResponse> response)
         {
-            return new Connection("fakeKey", "fakeSecret") {RequestRunner = response};
+            var fakeConnection = new Connection("fakeKey", "fakeSecret", "http://localhost")
+            {
+                RequestRunner = response,
+                SetRequestBody = (request, body) => {}
+            };
+            return fakeConnection;
         }
     }
 }
