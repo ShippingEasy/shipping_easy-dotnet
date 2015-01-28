@@ -8,50 +8,6 @@ namespace Tests
     [TestFixture]
     public class ClientTests
     {
-        private const string OrderJson = @"{
-  ""external_order_identifier"": ""ABC-100"",
-  ""ordered_at"": ""2014-01-16T14:37:56-06:00"",
-  ""recipients"": [
-    {
-      ""first_name"": ""Colin"",
-      ""last_name"": ""Smith"",
-      ""address"": ""1600 Pennsylvania Ave"",
-      ""line_items"": [
-        {
-          ""item_name"": ""Sprocket"",
-          ""quantity"": 7,
-          ""product_options"": {
-            ""color"": ""blue"",
-            ""size"": ""3""
-          }
-        }
-      ]
-    }
-  ]
-}";
-
-        [Test]
-        public void CreateJsonFromOrder()
-        {
-            var order = new Order
-            {
-                OrderIdentifier = "ABC-100",
-                OrderedAt = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0))
-            };
-            var recipient = new Recipient {FirstName = "Colin", LastName = "Smith", Address = "1600 Pennsylvania Ave"};
-            var lineItem = new LineItem
-            {
-                ItemName = "Sprocket",
-                Quantity = 7,
-                ProductOptions = { {"color", "blue"}, {"size", "3"}}
-            };
-            recipient.LineItems.Add(lineItem);
-            order.Recipients.Add(recipient);
-
-            var json = Client.OrderToJson(order);
-            Assert.AreEqual(OrderJson, json);
-        }
-
         [Test]
         public void GetOrdersReturnsAListOfOrders()
         {
@@ -133,6 +89,49 @@ namespace Tests
             var response = client.CreateOrder("abc", new Order());
             Assert.IsFalse(response.Success);
             Assert.That(response.Errors.ToString(), Is.StringContaining("The request has expired"));
+        }
+
+        [Test]
+        public void CreateJsonFromOrder()
+        {
+            var order = new Order
+            {
+                OrderIdentifier = "ABC-100",
+                OrderedAt = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0))
+            };
+            var recipient = new Recipient { FirstName = "Colin", LastName = "Smith", Address = "1600 Pennsylvania Ave" };
+            var lineItem = new LineItem
+            {
+                ItemName = "Sprocket",
+                Quantity = 7,
+                ProductOptions = { { "color", "blue" }, { "size", "3" } }
+            };
+            recipient.LineItems.Add(lineItem);
+            order.Recipients.Add(recipient);
+
+            var json = Client.OrderToJson(order);
+            const string serializedOrder = @"{
+  ""external_order_identifier"": ""ABC-100"",
+  ""ordered_at"": ""2014-01-16T14:37:56-06:00"",
+  ""recipients"": [
+    {
+      ""first_name"": ""Colin"",
+      ""last_name"": ""Smith"",
+      ""address"": ""1600 Pennsylvania Ave"",
+      ""line_items"": [
+        {
+          ""item_name"": ""Sprocket"",
+          ""quantity"": 7,
+          ""product_options"": {
+            ""color"": ""blue"",
+            ""size"": ""3""
+          }
+        }
+      ]
+    }
+  ]
+}";
+            Assert.AreEqual(serializedOrder, json);
         }
 
         private static Connection ResponseFromFile(string filename)
