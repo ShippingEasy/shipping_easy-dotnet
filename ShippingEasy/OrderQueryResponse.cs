@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using Newtonsoft.Json;
 
 namespace ShippingEasy
 {
-    public class OrderQueryResponse
+    public class OrderQueryResponse : ApiResponse
     {
         private readonly IList<Order> _orders = new List<Order>();
 
@@ -14,18 +13,8 @@ namespace ShippingEasy
             get { return _orders; }
         }
 
-        public string RawJson { get; private set; }
-
-        public bool Success
-        {
-            get { return Errors == null; }
-        }
-
         [JsonProperty("meta")]
         public ApiMetaData Meta { get; private set; }
-
-        [JsonProperty]
-        public object Errors { get; private set; }
     }
 
     public class ApiMetaData
