@@ -1,11 +1,16 @@
 @ECHO OFF
+SETLOCAL
+IF DEFINED FRAMEWORKDIR GOTO NUGET
+echo Setting Visual Studio environment variables
 call "%VS120COMNTOOLS%\vsvars32.bat"
 
-IF EXIST .\packages GOTO BUILD
 :NUGET
+IF EXIST .\packages GOTO BUILD
 .nuget\nuget.exe restore
 
 :BUILD
+set /p GIT_SHA=<.git\refs\heads\master
+echo [assembly: System.Reflection.AssemblyTrademark("%GIT_SHA%")] > ShippingEasy/Properties/BuildInfo.cs
 msbuild ShippingEasy.sln
 if %ERRORLEVEL% neq 0 GOTO FAIL
 
