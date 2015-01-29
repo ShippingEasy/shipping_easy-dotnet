@@ -6,21 +6,19 @@ namespace ShippingEasy
 {
     public static class Serialization
     {
-        public static JsonSerializerSettings Settings
+        static Serialization()
         {
-            get
+            Settings = new JsonSerializerSettings
             {
-                return new JsonSerializerSettings
-                {
-                    ContractResolver = new UnderscoreMappingResolver(),
-                    NullValueHandling = NullValueHandling.Ignore,
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                    DateParseHandling = DateParseHandling.DateTimeOffset,
-                    DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
-                    TraceWriter = new DiagnosticsTraceWriter()
-                };
-            }
+                ContractResolver = new UnderscoreMappingResolver(),
+                NullValueHandling = NullValueHandling.Ignore,
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateParseHandling = DateParseHandling.DateTimeOffset,
+                DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
+            };
         }
+
+        public static JsonSerializerSettings Settings { get; set; }
 
         class UnderscoreMappingResolver : DefaultContractResolver
         {
