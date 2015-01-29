@@ -4,8 +4,7 @@ namespace ShippingEasy
 {
     public class ApiResponse
     {
-        public string RawJson { get; protected set; }
-
+        public HttpResponse HttpResponse { get; protected set; }
         public bool Success
         {
             get { return Errors == null; }

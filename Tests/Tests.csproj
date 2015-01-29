@@ -44,7 +44,7 @@
     <Compile Include="CreateOrderResponseTests.cs" />
     <Compile Include="Fixture.cs" />
     <Compile Include="OrderQueryTests.cs" />
-    <Compile Include="ResponseParserTests.cs" />
+    <Compile Include="ResponseHandlerTests.cs" />
     <Compile Include="SignatureTests.cs" />
   </ItemGroup>
   <ItemGroup>

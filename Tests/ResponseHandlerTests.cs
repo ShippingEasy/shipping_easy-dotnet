@@ -5,14 +5,18 @@ using ShippingEasy;
 namespace Tests
 {
     [TestFixture]
-    public class ResponseParserTests
+    public class ResponseHandlerTests
     {
         [Test]
         public void PopulatesPropertiesFromJson()
         {
-            var response = @"{""status"": 23, ""part"": {""name"": ""Left blade"", ""Weight"": 38}}";
-            var parser = new ResponseParser();
-            var parsedResponse = parser.Parse<FakeResponse>(response);
+            var response = new HttpResponse
+            {
+                Body = @"{""status"": 23, ""part"": {""name"": ""Left blade"", ""Weight"": 38}}"
+            };
+
+            var handler = new ResponseHandler();
+            var parsedResponse = handler.Build<FakeResponse>(response);
 
             Assert.AreEqual("Left blade", parsedResponse.Part.Name);
             Assert.AreEqual(38, parsedResponse.Part.Weight);
@@ -23,9 +27,12 @@ namespace Tests
         [Test]
         public void PopulatesCollectionPropertiesFromJson()
         {
-            var response = @"{""parts"": [{""name"": ""Left blade"", ""Weight"": 38},{""weight"": 16, ""name"": ""Right blade""}]}";
-            var parser = new ResponseParser();
-            var parsedResponse = parser.Parse<FakeResponse2>(response);
+            var response = new HttpResponse
+            {
+                Body = @"{""parts"": [{""name"": ""Left blade"", ""Weight"": 38},{""weight"": 16, ""name"": ""Right blade""}]}"
+            };
+            var handler = new ResponseHandler();
+            var parsedResponse = handler.Build<FakeResponse2>(response);
 
             Assert.AreEqual(2, parsedResponse.Parts.Count);
             Assert.AreEqual("Left blade", parsedResponse.Parts[0].Name);
@@ -35,12 +42,16 @@ namespace Tests
         }
 
         [Test]
-        public void PopulatesSpecialRawJsonProperty()
+        public void PopulatesSpecialHttpResponseProperty()
         {
-            var response = @"{""status"": 23, ""part"": {""name"": ""Left blade"", ""Weight"": 38}}";
-            var parser = new ResponseParser();
-            var parsedResponse = parser.Parse<FakeResponse3>(response);
-            Assert.AreEqual(response, parsedResponse.RawJson);
+            var response = new HttpResponse
+            {
+                Status = 200,
+                Body = @"{""status"": 23, ""part"": {""name"": ""Left blade"", ""Weight"": 38}}"
+            };
+            var handler = new ResponseHandler();
+            var parsedResponse = handler.Build<FakeResponse3>(response);
+            Assert.AreEqual(response, parsedResponse.HttpResponse);
         }
 
         public class FakeResponse
@@ -58,7 +69,7 @@ namespace Tests
         public class FakeResponse3
         {
             public Widget Part { get; set; }
-            public string RawJson { get; private set; }
+            public HttpResponse HttpResponse { get; private set; }
         }
 
         public class Widget

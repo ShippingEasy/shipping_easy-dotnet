@@ -12,9 +12,9 @@ namespace Tests
         [Test]
         public void DeserializeTheCreatedOrder()
         {
-            var response = Fixture.Json("create_order_response");
-
-            var createOrderResponse = new ResponseParser().Parse<CreateOrderResponse>(response);
+            var body = Fixture.Json("create_order_response");
+            var response = new HttpResponse {Body = body};
+            var createOrderResponse = new ResponseHandler().Build<CreateOrderResponse>(response);
             var order = createOrderResponse.Order;
             Assert.AreEqual("ABC-6355", order.OrderIdentifier);
             var date = new DateTimeOffset(2015, 1, 23, 20, 13, 32, new TimeSpan());

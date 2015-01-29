@@ -50,7 +50,7 @@
     <Compile Include="OrderQuery.cs" />
     <Compile Include="OrderQueryResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponseParser.cs" />
+    <Compile Include="ResponseHandler.cs" />
     <Compile Include="Serialization.cs" />
     <Compile Include="Signature.cs" />
   </ItemGroup>

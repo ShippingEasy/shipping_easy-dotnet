@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Configuration;
 using System.Linq;
 
 namespace ShippingEasy.Console
@@ -10,27 +9,26 @@ namespace ShippingEasy.Console
         static void Main(string[] args)
         {
             var command = (args.FirstOrDefault() ?? "ORDERS").ToUpper();
-            var appSettings = System.Configuration.ConfigurationManager.AppSettings;
+            var appSettings = ConfigurationManager.AppSettings;
             var apiKey = appSettings["ShippingEasy.ApiKey"];
             var apiSecret = appSettings["ShippingEasy.ApiSecret"];
             var baseUrl = appSettings["ShippingEasy.BaseUrl"];
             try
             {
                 var client = new Client(apiKey, apiSecret, baseUrl);
-                string response;
+                HttpResponse response;
                 const string storeApiKey = "c71dc6da574eea04e2c926906bcb4eab";
                 switch (command)
                 {
                     case "ORDERS":
-                        response =
-                            client.GetOrders().RawJson;
+                        response = client.GetOrders().HttpResponse;
                         break;
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery
                         {
                             StoreKey = storeApiKey,
                             Status = "shipped, ready_for_shipment",
-                        }).RawJson;
+                        }).HttpResponse;
                         break;
                     case "CREATE_ORDER":
                         response = client.CreateOrder(storeApiKey, new Order
@@ -48,16 +46,16 @@ namespace ShippingEasy.Console
                                     LineItems = { new LineItem { ItemName = "Sprocket", Quantity = 7 } }
                                 }
                             }
-                        }).RawJson;
+                        }).HttpResponse;
                         break;
                     case "CANCEL":
                         var order_id = "ABC-45";
-                        response = client.CancelOrder(storeApiKey, order_id).RawJson;
+                        response = client.CancelOrder(storeApiKey, order_id).HttpResponse;
                         break;  
                     default:
                         throw new ArgumentException("Unrecognized command: " + command);
                 }
-                System.Console.WriteLine(response);
+                System.Console.WriteLine("Status: {0}\n{1}", response.Status, response.Body);
             }
             catch (Exception exception)
             {
