@@ -32,6 +32,12 @@ namespace ShippingEasy
             return new ResponseParser().Parse<CreateOrderResponse>(response.Body);
         }
 
+        public CancelOrderResponse CancelOrder(string storeApiKey, string externalOrderIdentifier)
+        {
+            var response = Connection.CancelOrderJson(storeApiKey, externalOrderIdentifier);
+            return new ResponseParser().Parse<CancelOrderResponse>(response.Body);
+        }
+
         /// <summary>
         /// Downloads orders from your ShippingEasy account
         /// </summary>
@@ -40,9 +46,9 @@ namespace ShippingEasy
         public OrderQueryResponse GetOrders(OrderQuery query = null)
         {
             query = query ?? new OrderQuery();
-            var response = query.StoreKey != null ?
-                Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary()) :
-                Connection.GetAllOrdersJson(query.ToDictionary());
+            var response = query.StoreKey != null
+                ? Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary())
+                : Connection.GetAllOrdersJson(query.ToDictionary());
             return new ResponseParser().Parse<OrderQueryResponse>(response.Body);
         }
 

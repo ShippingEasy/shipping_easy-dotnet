@@ -65,6 +65,12 @@ namespace ShippingEasy
         {
             return MakeRequest("POST", String.Format("/api/stores/{0}/orders", storeApiKey), jsonBody);
         }
+
+        public HttpResponse CancelOrderJson(string storeApiKey, string externalOrderIdentifier)
+        {
+            return MakeRequest("POST",
+                String.Format("/api/stores/{0}/orders/{1}/cancellations", storeApiKey, externalOrderIdentifier));
+        }
         
         /// <summary>
         /// A hook to override the method that takes a fully-constructed WebRequest and returns a response string

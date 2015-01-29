@@ -53,7 +53,7 @@ namespace Tests
         [Test]
         public void GetOrdersAuthenticationError()
         {
-            var client = new Client(ResponseFromFile("get_orders_fail_authentication"));
+            var client = new Client(ResponseFromFile("fail_authentication"));
 
             var response = client.GetOrders();
             Assert.IsFalse(response.Success);
@@ -89,6 +89,46 @@ namespace Tests
             var response = client.CreateOrder("abc", new Order());
             Assert.IsFalse(response.Success);
             Assert.That(response.Errors.ToString(), Is.StringContaining("The request has expired"));
+        }
+
+        [Test]
+        public void CancelOrderSuccess()
+        {
+            var client = new Client(ResponseFromFile("cancel_order_success"));
+
+            var response = client.CancelOrder("abc", "ABC-100");
+            Assert.IsTrue(response.Success);
+            Assert.AreEqual("cleared", response.Order.Status);            
+        }
+
+        [Test]
+        public void CancelOrderAlreadyCancelled()
+        {
+            var client = new Client(ResponseFromFile("cancel_order_already_cancelled"));
+
+            var response = client.CancelOrder("abc", "ABC-100");
+            Assert.IsFalse(response.Success);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("cannot be cancelled"));
+        }   
+
+        [Test]
+        public void CancelOrderUnknownOrder()
+        {
+            var client = new Client(ResponseFromFile("cancel_order_fail_unknown_order"));
+
+            var response = client.CancelOrder("abc", "ABC-45");
+            Assert.IsFalse(response.Success);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("Order not found"));
+        }
+
+        [Test]
+        public void CancelOrderAuthenticationError()
+        {
+            var client = new Client(ResponseFromFile("fail_authentication"));
+
+            var response = client.CancelOrder("abc", "ABC-45");
+            Assert.IsFalse(response.Success);
+            Assert.That(response.Errors.ToString(), Is.StringContaining("Access denied"));
         }
 
         [Test]

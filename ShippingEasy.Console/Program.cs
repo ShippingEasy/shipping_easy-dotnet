@@ -18,6 +18,7 @@ namespace ShippingEasy.Console
             {
                 var client = new Client(apiKey, apiSecret, baseUrl);
                 string response;
+                const string storeApiKey = "c71dc6da574eea04e2c926906bcb4eab";
                 switch (command)
                 {
                     case "ORDERS":
@@ -27,12 +28,12 @@ namespace ShippingEasy.Console
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery
                         {
-                            StoreKey = "c71dc6da574eea04e2c926906bcb4eab",
+                            StoreKey = storeApiKey,
                             Status = "shipped, ready_for_shipment",
                         }).RawJson;
                         break;
                     case "CREATE_ORDER":
-                        response = client.CreateOrder("c71dc6da574eea04e2c926906bcb4eab", new Order
+                        response = client.CreateOrder(storeApiKey, new Order
                         {
                             OrderIdentifier = string.Format("ABC-{0}", DateTime.Now.Ticks),
                             OrderedAt = DateTime.Now,
@@ -49,6 +50,10 @@ namespace ShippingEasy.Console
                             }
                         }).RawJson;
                         break;
+                    case "CANCEL":
+                        var order_id = "ABC-45";
+                        response = client.CancelOrder(storeApiKey, order_id).RawJson;
+                        break;  
                     default:
                         throw new ArgumentException("Unrecognized command: " + command);
                 }
@@ -56,7 +61,7 @@ namespace ShippingEasy.Console
             }
             catch (Exception exception)
             {
-                System.Console.WriteLine(exception);
+                System.Console.WriteLine("Uncaught exception: {0}", exception);
             }
             
         }
