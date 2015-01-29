@@ -57,7 +57,7 @@ namespace Tests
 
             var response = client.GetOrders();
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("Access denied"));
+            Assert.That(response.Errors, Is.StringContaining("Access denied"));
         }
 
         [Test]
@@ -77,8 +77,8 @@ namespace Tests
 
             var response = client.CreateOrder("abc", new Order());
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("ordered_at"));
-            Assert.That(response.Errors.ToString(), Is.StringContaining("recipients"));
+            Assert.That(response.Errors, Is.StringContaining("ordered_at"));
+            Assert.That(response.Errors, Is.StringContaining("recipients"));
         }
         
         [Test]
@@ -88,7 +88,7 @@ namespace Tests
 
             var response = client.CreateOrder("abc", new Order());
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("The request has expired"));
+            Assert.That(response.Errors, Is.StringContaining("The request has expired"));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Tests
 
             var response = client.CancelOrder("abc", "ABC-100");
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("cannot be cancelled"));
+            Assert.That(response.Errors, Is.StringContaining("cannot be cancelled"));
         }   
 
         [Test]
@@ -118,7 +118,7 @@ namespace Tests
 
             var response = client.CancelOrder("abc", "ABC-45");
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("Order not found"));
+            Assert.That(response.Errors, Is.StringContaining("Order not found"));
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace Tests
 
             var response = client.CancelOrder("abc", "ABC-45");
             Assert.IsFalse(response.Success);
-            Assert.That(response.Errors.ToString(), Is.StringContaining("Access denied"));
+            Assert.That(response.Errors, Is.StringContaining("Access denied"));
         }
 
         [Test]
