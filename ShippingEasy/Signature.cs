@@ -27,6 +27,7 @@ namespace ShippingEasy
         {
             var orderedParams = _parameters.OrderBy(param => param.Key)
                 .Where(param => !String.IsNullOrWhiteSpace(param.Value))
+                .Where(param => param.Key != ParameterKey)
                 .Select(param => String.Format("{0}={1}",
                     param.Key,
                     UrlEncodeValue(param.Value)));
@@ -80,5 +81,7 @@ namespace ShippingEasy
         {
             return Uri.EscapeDataString(parameterValue).Replace("%20", "+");
         }
+
+        public const string ParameterKey = "api_signature";
     }
 }

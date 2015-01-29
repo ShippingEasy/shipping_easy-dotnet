@@ -40,6 +40,17 @@ namespace Tests
         }
 
         [Test]
+        public void DisregardsSignatureParameterIfProvided()
+        {
+            _parameters.Add("api_signature", "12345");
+            _parameters.Add("something", "else");
+            var stringToSign = BuildSignature().ToPlainTextString();
+            Assert.That(stringToSign, Is.StringContaining("something"));
+            Assert.That(stringToSign, Is.Not.StringContaining("api_signature"));
+        }
+
+
+        [Test]
         public void GeneratesSignatureWithEmptyBody()
         {
             _body = "";
