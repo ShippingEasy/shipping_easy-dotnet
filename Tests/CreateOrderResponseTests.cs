@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using NUnit.Framework;
 using ShippingEasy;
+using ShippingEasy.Responses;
 
 namespace Tests
 {

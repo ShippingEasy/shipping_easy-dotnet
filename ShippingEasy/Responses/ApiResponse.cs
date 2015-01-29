@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace ShippingEasy
+namespace ShippingEasy.Responses
 {
     public class ApiResponse
     {

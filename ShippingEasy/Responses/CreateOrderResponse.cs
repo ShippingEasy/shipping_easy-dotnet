@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace ShippingEasy
+namespace ShippingEasy.Responses
 {
-    public class CancelOrderResponse : ApiResponse
+    public class CreateOrderResponse : ApiResponse
     {
         [JsonProperty]
         public Order Order { get; private set; }
