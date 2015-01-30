@@ -27,7 +27,16 @@ namespace ShippingEasy
         private readonly string _apiKey;
         private readonly string _apiSecret;
         private readonly Uri _baseUri;
+        public static readonly string UserAgentString;
 
+        static Connection()
+        {
+            UserAgentString = String.Format("ShippingEasy .NET Client: {0}/{1} ({2} {3})",
+                AssemblyInfo.GetAssemblyName(),
+                AssemblyInfo.GetAssemblyVersion(),
+                AssemblyInfo.GetFileVersion(),
+                AssemblyInfo.GetCommitIdentifier());
+        }
         /// <summary>
         /// Creates a new instance of a Connection
         /// </summary>
@@ -131,7 +140,7 @@ namespace ShippingEasy
             var request = ((HttpWebRequest) WebRequest.Create(requestUrl));
             request.Method = httpMethod;
             request.Accept = "application/json";
-            request.UserAgent = "ShippingEasy .NET Client v1.0.0";
+            request.UserAgent = UserAgentString;
 
             if (body == null) return request;
             (SetRequestBody ?? WriteToRequestStream)(request, body);

@@ -1,5 +1,9 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
+
 [assembly: AssemblyTitle("ShippingEasy Client")]
 [assembly: AssemblyDescription("http://shippingeasy.com")]
 [assembly: AssemblyConfiguration("")]
@@ -14,3 +18,41 @@ using System.Runtime.InteropServices;
 // AssemblyVersion should be manually updated for an official release
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+internal static class AssemblyInfo
+{
+    private static readonly Assembly _assembly;
+
+    static AssemblyInfo()
+    {
+        _assembly = Assembly.GetExecutingAssembly();
+    }
+
+    public static string GetAssemblyName()
+    {
+        return _assembly.GetName().Name;
+    }
+
+    public static string GetAssemblyVersion()
+    {
+        return _assembly.GetName().Version.ToString();
+    }
+
+    public static string GetFileVersion()
+    {
+        return GetAssemblyAttributeValue<AssemblyFileVersionAttribute>(a => a.Version);
+    }
+
+    public static string GetCommitIdentifier()
+    {
+        return GetAssemblyAttributeValue<AssemblyTrademarkAttribute>(a => a.Trademark);
+    }
+
+    private static string GetAssemblyAttributeValue<T>(Func<T, string> property)
+    {
+        var attr = _assembly.GetCustomAttributes(typeof(T), false)
+            .Cast<T>()
+            .FirstOrDefault();
+        return attr != null ? property(attr) : null;
+    }
+}
