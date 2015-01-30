@@ -6,6 +6,9 @@ using System.Text;
 
 namespace ShippingEasy
 {
+    /// <summary>
+    /// Helps sign requests to the ShippingEasy API servers using your API Secret
+    /// </summary>
     public class Signature
     {
         private readonly string _apiSecret;
@@ -23,6 +26,10 @@ namespace ShippingEasy
             _body = body;
         }
 
+        /// <summary>
+        /// Generates the string that will be signed, based on the request details
+        /// </summary>
+        /// <returns></returns>
         public string ToPlainTextString()
         {
             var orderedParams = _parameters.OrderBy(param => param.Key)
@@ -43,6 +50,10 @@ namespace ShippingEasy
             );
         }
 
+        /// <summary>
+        /// Generates the cryptographically secure request signature based on the request details
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ComputeHmacSha256Hash(_apiSecret, ToPlainTextString());

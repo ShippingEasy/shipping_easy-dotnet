@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using System.Reflection;
 using Newtonsoft.Json;
 using ShippingEasy.Responses;
 
