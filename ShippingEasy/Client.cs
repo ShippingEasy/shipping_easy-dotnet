@@ -6,16 +6,16 @@ namespace ShippingEasy
 {
     public class Client
     {
+        private readonly ResponseHandler _responseHandler;
         public Connection Connection { get; private set; }
 
-        public Client(string apiKey, string apiSecret, string baseUrl)
-        {
-            Connection = new Connection(apiKey, apiSecret, baseUrl);
-        }
+        public Client(string apiKey, string apiSecret, string baseUrl) :
+            this(new Connection(apiKey, apiSecret, baseUrl)) {}
 
         public Client(Connection connection)
         {
             Connection = connection;
+            _responseHandler = new ResponseHandler();
         }
 
         /// <summary>
@@ -30,13 +30,13 @@ namespace ShippingEasy
         {
             var postBody = String.Format("{{\"order\": {0}}}", OrderToJson(order));
             var response = Connection.CreateOrderFromJson(storeApiKey, postBody);
-            return new ResponseHandler().Build<CreateOrderResponse>(response);
+            return _responseHandler.Build<CreateOrderResponse>(response);
         }
 
         public CancelOrderResponse CancelOrder(string storeApiKey, string externalOrderIdentifier)
         {
             var response = Connection.CancelOrderJson(storeApiKey, externalOrderIdentifier);
-            return new ResponseHandler().Build<CancelOrderResponse>(response);
+            return _responseHandler.Build<CancelOrderResponse>(response);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace ShippingEasy
             var response = query.StoreKey != null
                 ? Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary())
                 : Connection.GetAllOrdersJson(query.ToDictionary());
-            return new ResponseHandler().Build<OrderQueryResponse>(response);
+            return _responseHandler.Build<OrderQueryResponse>(response);
         }
 
         public static string OrderToJson(Order order)

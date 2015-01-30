@@ -61,6 +61,16 @@ namespace Tests
         }
 
         [Test]
+        public void GetOrdersReturnsInvalidJson()
+        {
+            var client = new Client(ResponseFromFile("invalid_json_response"));
+
+            var response = client.GetOrders();
+            Assert.IsFalse(response.Success);
+            Assert.That(response.HttpResponse.Body, Is.StringContaining("Internal Server Error"));
+        }
+
+        [Test]
         public void CreateOrderSuccess()
         {
             var client = new Client(ResponseFromFile("create_order_response"));

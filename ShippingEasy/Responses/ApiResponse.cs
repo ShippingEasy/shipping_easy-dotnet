@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 
 namespace ShippingEasy.Responses
@@ -7,21 +8,26 @@ namespace ShippingEasy.Responses
         /// <summary>
         /// The unparsed response from the remote server
         /// </summary>
-        public HttpResponse HttpResponse { get; protected set; }
+        public HttpResponse HttpResponse { get; set; }
         
         /// <summary>
         /// Indiciates if request was successful
         /// </summary>
         public bool Success
         {
-            get { return ErrorObject == null; }
+            get { return ParseException == null && ErrorObject == null; }
         }
+
+        /// <summary>
+        /// Exception thrown while trying to parse response
+        /// </summary>
+        public Exception ParseException { get; set; }
 
         /// <summary>
         /// The untyped error object. Could be a JSON array, object, or string.
         /// </summary>
         [JsonProperty("errors")]
-        public object ErrorObject { get; protected set; }
+        public object ErrorObject { get; set; }
         
         /// <summary>
         /// The errors as a string. May contain unparsed JSON.

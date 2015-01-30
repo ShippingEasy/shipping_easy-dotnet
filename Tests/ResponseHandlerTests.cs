@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using ShippingEasy;
+using ShippingEasy.Responses;
 
 namespace Tests
 {
@@ -42,6 +44,20 @@ namespace Tests
         }
 
         [Test]
+        public void PopulatesParseExceptionWhenResponseCannotBeParsedAsJson()
+        {
+            var response = new HttpResponse
+            {
+                Body = @"<html><h1>Internal Server Error</h1></html>"
+            };
+            var handler = new ResponseHandler();
+            var parsedResponse = handler.Build<FakeResponse2>(response);
+
+            Assert.IsInstanceOf<FakeResponse2>(parsedResponse);
+            Assert.IsInstanceOf<Exception>(parsedResponse.ParseException);
+        }
+
+        [Test]
         public void PopulatesSpecialHttpResponseProperty()
         {
             var response = new HttpResponse
@@ -54,22 +70,34 @@ namespace Tests
             Assert.AreEqual(response, parsedResponse.HttpResponse);
         }
 
-        public class FakeResponse
+        [Test]
+        public void PopulatesSpecialHttpResponsePropertyEvenOnParseFailure()
+        {
+            var response = new HttpResponse
+            {
+                Status = 200,
+                Body = @"<html><h1>Internal Server Error</h1></html>"
+            };
+            var handler = new ResponseHandler();
+            var parsedResponse = handler.Build<FakeResponse3>(response);
+            Assert.AreEqual(response, parsedResponse.HttpResponse);
+        }
+
+        public class FakeResponse : ApiResponse
         {
             public Widget Part { get; set; }
             public string SomethingElse { get; set; }
             public int Status { get; set; }
         }
 
-        public class FakeResponse2
+        public class FakeResponse2 : ApiResponse
         {
             public IList<Widget> Parts { get; set; }
         }
 
-        public class FakeResponse3
+        public class FakeResponse3 : ApiResponse
         {
             public Widget Part { get; set; }
-            public HttpResponse HttpResponse { get; private set; }
         }
 
         public class Widget
