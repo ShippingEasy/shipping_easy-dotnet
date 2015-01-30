@@ -8,8 +8,11 @@ namespace ShippingEasy
     {
         private readonly List<Recipient> _recipients = new List<Recipient>();
 
-        [JsonProperty("external_order_identifier")]
-        public string OrderIdentifier { get; set; }
+        /// <summary>
+        /// A string that uniquely identifies the order in your system
+        /// </summary>
+        public string ExternalOrderIdentifier { get; set; }
+
         public DateTimeOffset? OrderedAt { get; set; }
         /// <summary>
         /// Time order was last updated by ShippingEasy.
@@ -22,9 +25,7 @@ namespace ShippingEasy
             get { return _recipients; }
         }
 
-        [JsonProperty("order_status")]
-        public string Status { get; set; }
-
+        public string OrderStatus { get; set; }
         public decimal? TotalIncludingTax { get; set; }
         public decimal? TotalExcludingTax { get; set; }
         public decimal? DiscountAmount { get; set; }

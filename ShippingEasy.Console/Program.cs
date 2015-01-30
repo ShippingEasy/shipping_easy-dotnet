@@ -33,7 +33,7 @@ namespace ShippingEasy.Console
                     case "CREATE_ORDER":
                         response = client.CreateOrder(storeApiKey, new Order
                         {
-                            OrderIdentifier = string.Format("ABC-{0}", DateTime.Now.Ticks),
+                            ExternalOrderIdentifier = string.Format("ABC-{0}", DateTime.Now.Ticks),
                             OrderedAt = DateTime.Now,
                             Recipients =
                             {

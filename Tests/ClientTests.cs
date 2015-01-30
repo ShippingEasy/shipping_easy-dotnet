@@ -16,8 +16,8 @@ namespace Tests
             var response = client.GetOrders();
             Assert.IsTrue(response.Success);
             Assert.AreEqual(2, response.Orders.Count);
-            Assert.AreEqual("ABC-123", response.Orders[0].OrderIdentifier);
-            Assert.AreEqual("ABC-789", response.Orders[1].OrderIdentifier);
+            Assert.AreEqual("ABC-123", response.Orders[0].ExternalOrderIdentifier);
+            Assert.AreEqual("ABC-789", response.Orders[1].ExternalOrderIdentifier);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Tests
 
             var response = client.CancelOrder("abc", "ABC-100");
             Assert.IsTrue(response.Success);
-            Assert.AreEqual("cleared", response.Order.Status);            
+            Assert.AreEqual("cleared", response.Order.OrderStatus);            
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace Tests
         {
             var order = new Order
             {
-                OrderIdentifier = "ABC-100",
+                ExternalOrderIdentifier = "ABC-100",
                 OrderedAt = new DateTimeOffset(2014, 1, 16, 14, 37, 56, new TimeSpan(-6, 0, 0))
             };
             var recipient = new Recipient { FirstName = "Colin", LastName = "Smith", Address = "1600 Pennsylvania Ave" };

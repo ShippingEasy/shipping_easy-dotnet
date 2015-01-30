@@ -17,10 +17,10 @@ namespace Tests
             var response = new HttpResponse {Body = body};
             var createOrderResponse = new ResponseHandler().Build<CreateOrderResponse>(response);
             var order = createOrderResponse.Order;
-            Assert.AreEqual("ABC-6355", order.OrderIdentifier);
+            Assert.AreEqual("ABC-6355", order.ExternalOrderIdentifier);
             var date = new DateTimeOffset(2015, 1, 23, 20, 13, 32, new TimeSpan());
             Assert.AreEqual(date, order.OrderedAt);
-            Assert.AreEqual("ready_for_shipment", order.Status);
+            Assert.AreEqual("ready_for_shipment", order.OrderStatus);
             Assert.AreEqual(0.01m, order.TotalIncludingTax);
             Assert.AreEqual(0.02m, order.TotalExcludingTax);
             Assert.AreEqual(0.03m, order.DiscountAmount);
