@@ -77,7 +77,7 @@ namespace Tests
 
             var response = client.CreateOrder("abc", new Order());
             Assert.IsTrue(response.Success);
-            Assert.AreEqual(122, response.Order.SystemId);
+            Assert.AreEqual(DateTimeOffset.Parse("2015-01-23T20:13:32Z"), response.Order.OrderedAt);
         }
 
         [Test]
