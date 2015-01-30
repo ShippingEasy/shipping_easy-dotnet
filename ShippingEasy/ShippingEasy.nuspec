@@ -8,9 +8,10 @@
     <owners>$author$</owners>
     <licenseUrl>https://raw.githubusercontent.com/ShippingEasy/shipping_easy-dotnet/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/ShippingEasy/shipping_easy-dotnet</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/ShippingEasy/shipping_easy-dotnet/6723a39509a431e962f969df234fe7b692a30ee9/se_logo.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/ShippingEasy/shipping_easy-dotnet/master/se_logo.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
+    <summary>ShippingEasy API Client</summary>
     <copyright>Copyright 2015</copyright>
   </metadata>
 </package>

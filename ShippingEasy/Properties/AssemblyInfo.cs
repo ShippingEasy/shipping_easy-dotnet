@@ -4,8 +4,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 // ReSharper disable CheckNamespace
 
-[assembly: AssemblyTitle("ShippingEasyDotNet")]
-[assembly: AssemblyDescription("ShippingEasy API Client")]
+[assembly: AssemblyTitle("ShippingEasy")]
+[assembly: AssemblyDescription("Official wrapper to integrate with the ShippingEasy API. http://shippingeasy.com")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ShippingEasy")]
 [assembly: AssemblyProduct("ShippingEasy")]
