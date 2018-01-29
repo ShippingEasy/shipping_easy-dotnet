@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
-    <Compile Include="Properties\BuildInfo.cs" />
     <Compile Include="Responses\ApiResponse.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Connection.cs" />

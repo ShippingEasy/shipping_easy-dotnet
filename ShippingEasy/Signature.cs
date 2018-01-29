@@ -46,7 +46,7 @@ namespace ShippingEasy
                 _path,
                 combinedParameters,
                 _body
-                }.Where(component => !String.IsNullOrWhiteSpace(component))
+                }
             );
         }
 
