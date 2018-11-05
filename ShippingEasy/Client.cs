@@ -62,6 +62,12 @@ namespace ShippingEasy
             return _responseHandler.Build<CancelOrderResponse>(response);
         }
 
+        public StoreQueryResponse GetStores()
+        {
+            var response = Connection.GetAllStoresJson();
+            return _responseHandler.Build<StoreQueryResponse>(response);
+        }
+
         /// <summary>
         /// Downloads orders from your ShippingEasy account
         /// </summary>
@@ -74,6 +80,13 @@ namespace ShippingEasy
                 ? Connection.GetStoreOrdersJson(query.StoreKey, query.ToDictionary())
                 : Connection.GetAllOrdersJson(query.ToDictionary());
             return _responseHandler.Build<OrderQueryResponse>(response);
+        }
+
+        public OrderResponse GetOrder(string id)
+        {
+            var response = Connection.GetOrderJson(id);
+            return _responseHandler.Build<OrderResponse>(response);
+
         }
 
         public static string OrderToJson(Order order)
