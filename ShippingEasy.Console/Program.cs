@@ -31,6 +31,9 @@ namespace ShippingEasy.Console
                     case "ORDERS":
                         response = client.GetOrders().HttpResponse;
                         break;
+                    case "ORDERSBYNUMBER":
+                        response = client.GetOrders(new OrderQuery() { OrderNumber = "1", Status = "ready_for_shipment,shipped" }).HttpResponse;
+                        break;
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery
                         {

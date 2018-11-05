@@ -52,10 +52,12 @@ namespace ShippingEasy
             {
                 options.Add("last_updated_at", LastUpdated.Value.ToString("O"));
             }
-            if(!String.IsNullOrEmpty(OrderNumber))
+
+            if(!String.IsNullOrEmpty(OrderNumber) && !String.IsNullOrEmpty(Status))
             {
                 options.Clear();
                 options.Add("order_number", OrderNumber);
+                options.Add("status", Status);
             }
             return options;
         }
