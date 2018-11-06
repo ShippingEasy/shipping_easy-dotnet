@@ -6,6 +6,12 @@ namespace ShippingEasy
 {
     public class Order
     {
+        public Order()
+        {
+            Shipments = new List<Shipment>();
+            Tags = new List<string>();
+        }
+
         private readonly List<Recipient> _recipients = new List<Recipient>();
 
         /// <summary>
@@ -59,6 +65,9 @@ namespace ShippingEasy
         public string BillingEmail { get; set; }
         [JsonProperty]
         public string StoreApiKey { get; private set; }
+        public List<Shipment> Shipments { get; set; }
+        public List<string> Tags { get; set; }
+        public string Notes { get; set; }
     }
 
     public class Recipient
@@ -94,6 +103,10 @@ namespace ShippingEasy
         public string ShippingMethod { get; set; }
         public int? ItemsShipped { get; set; }
         public int? ExtShippingDetailId { get; set; }
+        [JsonProperty("internal_notes")]
+        public string InternalNotes { get; set; }
+        [JsonProperty("original_order")]
+        public OriginalOrder OriginalOrder { get; set; }
     }
 
     public class LineItem
