@@ -68,6 +68,15 @@ namespace ShippingEasy
         public List<Shipment> Shipments { get; set; }
         public List<string> Tags { get; set; }
         public string Notes { get; set; }
+        [JsonProperty("custom_1")]
+        public string Custom1 { get; set; }
+        [JsonProperty("custom_2")]
+        public string Custom2 { get; set; }
+        [JsonProperty("custom_3")]
+        public string Custom3 { get; set; }
+        [JsonProperty("internal_notes")]
+        public string InternalNotes { get; set; }
+
     }
 
     public class Recipient
