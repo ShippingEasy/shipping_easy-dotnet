@@ -50,7 +50,7 @@ namespace ShippingEasy
             }
             if (LastUpdated.HasValue)
             {
-                options.Add("last_updated_at", LastUpdated.Value.ToString("O"));
+                options.Add("last_updated_at", LastUpdated.Value.ToString("u"));
             }
 
             if(!String.IsNullOrEmpty(OrderNumber) && !String.IsNullOrEmpty(Status))
