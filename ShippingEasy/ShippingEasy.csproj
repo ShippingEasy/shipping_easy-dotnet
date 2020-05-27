@@ -42,7 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authenticator.cs" />
-    <Compile Include="Properties\BuildInfo.cs" />
+    <Compile Include="OrderResponse.cs" />
+    <Compile Include="OriginalOrder.cs" />
     <Compile Include="Responses\ApiResponse.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Connection.cs" />
@@ -53,8 +54,11 @@
     <Compile Include="ResponseHandler.cs" />
     <Compile Include="Responses\CancelOrderResponse.cs" />
     <Compile Include="Responses\CreateOrderResponse.cs" />
+    <Compile Include="Responses\StoreQueryResponse.cs" />
     <Compile Include="Serialization.cs" />
+    <Compile Include="Shipment.cs" />
     <Compile Include="Signature.cs" />
+    <Compile Include="Store.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

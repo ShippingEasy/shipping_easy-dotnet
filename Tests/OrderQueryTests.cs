@@ -10,10 +10,11 @@ namespace Tests
         [Test]
         public void BuildsDictionaryForPropertiesWithValues()
         {
-            var orderQuery = new OrderQuery {Page = 2, Status = "shipped"};
+            var orderQuery = new OrderQuery {Page = 2, Status = "shipped", OrderNumber = "1"};
             var options = orderQuery.ToDictionary();
             Assert.That(options.Keys, Is.EquivalentTo(new[] { "page", "status" }));
             Assert.AreEqual("2", options["page"]);
+            Assert.AreEqual("1", options["order_number"]);
             Assert.AreEqual("shipped", options["status"]);
         }
 

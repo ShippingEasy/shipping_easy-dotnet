@@ -13,6 +13,8 @@ namespace ShippingEasy.Console
             var apiKey = appSettings["ShippingEasy.ApiKey"];
             var apiSecret = appSettings["ShippingEasy.ApiSecret"];
             var baseUrl = appSettings["ShippingEasy.BaseUrl"];
+            string orderId = "1111";
+
             try
             {
                 var client = new Client(apiKey, apiSecret, baseUrl);
@@ -20,8 +22,17 @@ namespace ShippingEasy.Console
                 const string storeApiKey = "c71dc6da574eea04e2c926906bcb4eab";
                 switch (command)
                 {
+                    case "STORES":
+                        response = client.GetStores().HttpResponse;
+                        break;
+                    case "ORDERS_ID":
+                        response = client.GetOrder(orderId).HttpResponse;
+                        break;
                     case "ORDERS":
                         response = client.GetOrders().HttpResponse;
+                        break;
+                    case "ORDERSBYNUMBER":
+                        response = client.GetOrders(new OrderQuery() { OrderNumber = "1", Status = "ready_for_shipment,shipped" }).HttpResponse;
                         break;
                     case "STORE_ORDERS":
                         response = client.GetOrders(new OrderQuery

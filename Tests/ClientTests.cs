@@ -21,6 +21,19 @@ namespace Tests
         }
 
         [Test]
+        public void GetOrdersReturnsAListOfOrdersShipments()
+        {
+            var client = new Client(ResponseFromFile("get_orders_success_shipment"));
+
+            var response = client.GetOrders();
+            Assert.IsTrue(response.Success);
+            Assert.AreEqual(1, response.Orders.Count);
+            Assert.AreEqual("8888888888888888888888", response.Orders[0].Shipments[0].TrackingNumber);
+            Assert.AreEqual("internal order notes", response.Orders[0].Recipients[0].InternalNotes);
+        }
+
+
+        [Test]
         public void GetOrdersReturnsCountAndPagingDetails()
         {
             var client = new Client(ResponseFromFile("get_orders_success"));

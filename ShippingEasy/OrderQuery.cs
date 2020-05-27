@@ -6,6 +6,11 @@ namespace ShippingEasy
     public class OrderQuery
     {
         /// <summary>
+        /// The external_order_identifier to search for
+        /// <remarks>Search for sales by order number</remarks>
+        /// </summary>
+        public string OrderNumber { get; set; }
+        /// <summary>
         /// The status of the orders you would like to return. 'shipped' or 'ready_for_shipment'
         /// <remarks>You can specify multiple states by separating with a comma. Ex: 'shipped,ready_for_shipment'</remarks>
         /// </summary>
@@ -45,7 +50,13 @@ namespace ShippingEasy
             }
             if (LastUpdated.HasValue)
             {
-                options.Add("last_updated_at", LastUpdated.Value.ToString("O"));
+                options.Add("last_updated_at", LastUpdated.Value.ToString("u"));
+            }
+
+            if(!String.IsNullOrEmpty(OrderNumber))
+            {
+                options.Clear();
+                options.Add("order_number", OrderNumber);
             }
             return options;
         }
