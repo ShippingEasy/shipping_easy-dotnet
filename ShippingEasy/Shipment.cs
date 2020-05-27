@@ -19,7 +19,7 @@ namespace ShippingEasy
         [JsonProperty("workflow_state")]
         public string WorkflowState { get; set; }
         [JsonProperty("cloned_from_shipment_id")]
-        public int? ClonedFromShipmentID { get; set; }
+        public string ClonedFromShipmentID { get; set; }
         [JsonProperty("weight_in_ounces")]
         public decimal? WeightInOunches { get; set; }
         [JsonProperty("length_in_ounces")]

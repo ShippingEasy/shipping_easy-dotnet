@@ -12,6 +12,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <summary>ShippingEasy API Client</summary>
-    <copyright>Copyright 2015</copyright>
+    <copyright>Copyright 2015-2020</copyright>
   </metadata>
 </package>
